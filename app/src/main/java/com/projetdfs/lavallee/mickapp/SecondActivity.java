@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class SecondActivity extends AppCompatActivity {
 
@@ -14,6 +15,13 @@ public class SecondActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
+
+        final TextView mTxtDisplay = (TextView) findViewById(R.id.myTxt);
+
+        Intent myInt = getIntent();
+        String txtJSON = myInt.getStringExtra("JSON");
+
+        mTxtDisplay.setText(txtJSON.substring(0, 500));
 
         ImageView img = (ImageView) findViewById(R.id.logo);
         img.setOnClickListener(new View.OnClickListener(){

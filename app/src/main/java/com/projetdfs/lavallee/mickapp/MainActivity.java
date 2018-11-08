@@ -1,8 +1,10 @@
 package com.projetdfs.lavallee.mickapp;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,9 +38,12 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Object o) {
                         // Display the first 500 characters of the response string.
-                        String response = (String)o;
+                        String response = (String) o;
                         Log.i(TAG, response.toString());
-                        mTxtDisplay.setText("Response is: " + response.substring(0, 500));
+                        //mTxtDisplay.setText("Response is: " + response.substring(0, 500));
+                        Intent monIntent = new Intent(MainActivity.this, SecondActivity.class);
+                        monIntent.putExtra("JSON",response);
+                        startActivity(monIntent);
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -49,5 +54,6 @@ public class MainActivity extends AppCompatActivity {
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
 
+        }
+
     }
-}
