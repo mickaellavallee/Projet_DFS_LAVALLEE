@@ -21,7 +21,7 @@
     <TextView
         android:id="@+id/text_main"
         android:layout_width="wrap_content"
-        android:layout_height="34dp"
+        android:layout_height="33dp"
         android:layout_marginTop="89dp"
         android:gravity="center_vertical"
         android:text="Chargement en cours"
