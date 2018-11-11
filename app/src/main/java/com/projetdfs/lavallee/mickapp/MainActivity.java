@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private void loadFlux() {
         HttpURLConnection urlConnection = null;
         try {
-            URL url = new URL("http://voyage2.corellis.eu/api/v2/homev2?lat=43&lon=6");
+            URL url = new URL("http://voyage2.corellis.eu/api/v2/homev2?lat=43.14554197717752&lon=6.00.246207789143&offset=2500");
             urlConnection = (HttpURLConnection) url.openConnection();
             InputStream in = urlConnection.getInputStream();
 
