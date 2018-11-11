@@ -1,27 +1,29 @@
 package com.projetdfs.lavallee.mickapp;
 
 import android.app.ListActivity;
-import android.media.Image;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.net.HttpURLConnection;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
 
 public class SecondActivity extends ListActivity {
 
     List<Second> mesSeconds = new ArrayList<Second>();
     Double distance;
     String media;
+    String title;
+    Double latitude;
+    Double longitude;
 
     String TAG = "Parametres";
 
@@ -52,20 +54,38 @@ public class SecondActivity extends ListActivity {
 
                             media = data.getJSONObject(i).getString("media");
 
-                            mesSeconds.add(new Second(media, type, title, distance));
-                            Log.i(TAG, media + " . " + type + " . " + title + " . " + distance.toString());
+                            if (jsonObjectReceived.getJSONArray("data").getJSONObject(i).has("location")) {
+                                latitude = jsonObjectReceived.getJSONArray("data").getJSONObject(i).getJSONObject("location").getJSONObject("coords").getDouble("lat");
+                                longitude = jsonObjectReceived.getJSONArray("data").getJSONObject(i).getJSONObject("location").getJSONObject("coords").getDouble("lon");
+                            } else latitude = 1.1;
                         } else {
+                            media = "https://www.cocoland.info/coco_files/coco-marche-pas.png";
+                            if (jsonObjectReceived.getJSONArray("data").getJSONObject(i).has("location")) {
+                                latitude = jsonObjectReceived.getJSONArray("data").getJSONObject(i).getJSONObject("location").getJSONObject("coords").getDouble("lat");
+                                longitude = jsonObjectReceived.getJSONArray("data").getJSONObject(i).getJSONObject("location").getJSONObject("coords").getDouble("lon");
+                            } else latitude = 1.1;
+                        }
+                        mesSeconds.add(new Second(media, type, title, distance, latitude, longitude));
+                        Log.i(TAG, media + " . " + type + " . " + title + " . " + distance.toString());
+                    }else{
                             if (data.getJSONObject(i).has("media")) {
                                 media = data.getJSONObject(i).getString("media");
+                                if (jsonObjectReceived.getJSONArray("data").getJSONObject(i).has("location")){
+                                    latitude=jsonObjectReceived.getJSONArray("data").getJSONObject(i).getJSONObject("location").getJSONObject("coords").getDouble("lat");
+                                    longitude=jsonObjectReceived.getJSONArray("data").getJSONObject(i).getJSONObject("location").getJSONObject("coords").getDouble("lon");
+                                }else latitude=1.1;
                             } else {
                                 media = "https://www.cocoland.info/coco_files/coco-marche-pas.png";
+                                if (jsonObjectReceived.getJSONArray("data").getJSONObject(i).has("location")){
+                                    latitude=jsonObjectReceived.getJSONArray("data").getJSONObject(i).getJSONObject("location").getJSONObject("coords").getDouble("lat");
+                                    longitude=jsonObjectReceived.getJSONArray("data").getJSONObject(i).getJSONObject("location").getJSONObject("coords").getDouble("lon");
+                                }else latitude=1.1;
                             }
-                            mesSeconds.add(new Second(media, type, title, 0.0));
+                            mesSeconds.add(new Second(media, type, title, 0.0,latitude,longitude));
                             Log.i(TAG, media + " . " + type + " . " + title + " . no distance available");
                         }
                     }
                 }
-            }
             Log.i(TAG,mesSeconds.toString());
         }
         catch (Exception e){
@@ -75,5 +95,28 @@ public class SecondActivity extends ListActivity {
         SecondActivityAdapter adapter = new SecondActivityAdapter(this, mesSeconds);
         myListView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+
+        myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Second map = (Second) getListView().getItemAtPosition(position);
+                switch (map.getType()){
+                    case "POI":
+                        Intent i = new Intent(SecondActivity.this,MapsActivity.class);
+                        i.putExtra("latitude",latitude);
+                        i.putExtra("longitude",longitude);
+                        i.putExtra("title",title);
+                        startActivity(i);
+                        break;
+                    case "CITY":
+                        break;
+                    case "HOTEL":
+                        Intent intent=new Intent(Intent.ACTION_VIEW, Uri.parse("http://mlavallee.perso.ec-m.fr/"));
+                        startActivity(intent);
+                        break;
+                }
+            }
+        });
+
     }
 }

@@ -21,6 +21,9 @@ public class SecondActivityAdapter extends BaseAdapter {
     List<Second> biblio;
     LayoutInflater inflater;
     Context context;
+    private static final int TYPE_ITEM_PAIR = 0;
+    private static final int TYPE_ITEM_IMPAIR = 1;
+    private static final int TYPE_MAX_COUNT = 2;
 
     private class ViewHolder {
         ImageView ivImage;
@@ -43,7 +46,12 @@ public class SecondActivityAdapter extends BaseAdapter {
         if (convertView==null){
             Log.v("test", "convertView is null");
             holder = new ViewHolder();
-            convertView = inflater.inflate(R.layout.activity_second, null);
+            if (getItemViewType(position)==TYPE_ITEM_PAIR){
+                convertView = inflater.inflate(R.layout.activity_second, null);
+            }
+            else {
+                convertView = inflater.inflate(R.layout.activity_second_bis, null);
+            }
             holder.ivImage = (ImageView) convertView.findViewById(R.id.img);
             holder.tvType = (TextView) convertView.findViewById(R.id.type);
             holder.tvTitre = (TextView) convertView.findViewById(R.id.title);
@@ -79,5 +87,18 @@ public class SecondActivityAdapter extends BaseAdapter {
     @Override
     public long getItemId(int position) {
         return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (position%2==0){
+            return TYPE_ITEM_PAIR;
+        }
+        else return TYPE_ITEM_IMPAIR;
+    }
+
+    @Override
+    public int getViewTypeCount() {
+        return TYPE_MAX_COUNT;
     }
 }

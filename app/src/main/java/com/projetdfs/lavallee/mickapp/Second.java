@@ -1,11 +1,31 @@
 package com.projetdfs.lavallee.mickapp;
 
+import java.util.HashMap;
+
 public class Second {
 
     private String image;
     private String type;
     private String titre;
     private Double distance;
+    private Double latitude;
+    private Double longitude;
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
 
     public String getImage() {
         return image;
@@ -46,10 +66,12 @@ public class Second {
         this.distance = distance;
     }
 
-    public Second(String image, String type,String titre, Double distance) {
+    public Second(String image, String type,String titre, Double distance,Double latitude,Double longitude) {
         this.image = image;
         this.type = type;
         this.titre = titre;
         this.distance = distance;
+        this.latitude=latitude;
+        this.longitude=longitude;
     }
 }
