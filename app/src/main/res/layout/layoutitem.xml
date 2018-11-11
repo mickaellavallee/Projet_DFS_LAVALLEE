@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    tools:context=".SecondActivity">
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline"
@@ -27,7 +26,7 @@
         app:srcCompat="@drawable/logo" />
 
     <TextView
-        android:id="@+id/type"
+        android:id="@+id/display"
         android:layout_width="201dp"
         android:layout_height="28dp"
         android:layout_marginStart="29dp"
